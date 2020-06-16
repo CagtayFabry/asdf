@@ -27,7 +27,11 @@ _datatype_names = {
     'float64'    : 'f8',
     'complex64'  : 'c8',
     'complex128' : 'c16',
-    'bool8'      : 'b1'
+    'bool8'      : 'b1',
+    'timedelta64[ms]': 'm8[ms]',
+    'datetime64[ms]': 'M8[ms]',
+    'timedelta64[ns]': 'm8[ns]',
+    'datetime64[ns]': 'M8[ns]',
 }
 
 
