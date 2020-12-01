@@ -588,8 +588,8 @@ class BlockManager:
         if auto_inline and block.array_storage in ['internal', 'inline']:
             if np.product(block.data.shape) < auto_inline:
                 if np.issubdtype(block.data.dtype, np.integer):
-                    if (np.all(block.data < (1 << 51))
-                            & np.all(block.data > -(1 << 51) - 1)):
+                    if (np.all(block.data <= ((1 << 51) - 1))
+                            & np.all(block.data >= -((1 << 51) - 2))):
                         self.set_array_storage(block, 'inline')
                     else:
                         self.set_array_storage(block, 'internal')
