@@ -587,14 +587,16 @@ class BlockManager:
         auto_inline = getattr(ctx, '_auto_inline', None)
         if auto_inline and block.array_storage in ['internal', 'inline']:
             if np.product(block.data.shape) < auto_inline:
-                if np.issubdtype(block.data.dtype, np.integer) &\
-                        np.all(block.data < (1 << 51)) &\
-                        np.all(block.data > -(1 << 51) - 1):
-                    self.set_array_storage(block, 'inline')
+                if np.issubdtype(block.data.dtype, np.integer):
+                    if (np.all(block.data < (1 << 51))
+                            & np.all(block.data > -(1 << 51) - 1)):
+                        self.set_array_storage(block, 'inline')
+                    else:
+                        self.set_array_storage(block, 'internal')
+                        warnings.warn("Could not honor 'auto_inline' for block because "
+                                      "of too large integer value.")
                 else:
-                    self.set_array_storage(block, 'internal')
-                    warnings.warn("Could not honor 'auto_inline' for block because "
-                              "of too large integer value.")
+                    self.set_array_storage(block, 'inline')
             else:
                 self.set_array_storage(block, 'internal')
 
